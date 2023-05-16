@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:vendingmachine/meu_aplicativo.dart';
 import 'package:vendingmachine/services/auth_service.dart';
 
 void main() async {
@@ -10,8 +11,9 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => AuthService())
+        ChangeNotifierProvider(create: (context) => AuthService()),
       ],
+      child: MeuAplicativo(),
     )
   );
 }
