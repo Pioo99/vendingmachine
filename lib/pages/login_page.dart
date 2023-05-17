@@ -35,7 +35,7 @@ class _LoginPageState extends State<LoginPage>{
         toggleButton = 'Ainda não tem conta? Cadastre-se aqui.';
       } else {
         title = 'Crie a sua conta';
-        actionButton = 'Cadastra';
+        actionButton = 'Cadastrar';
         toggleButton = 'Voltar ao login.';
       }
     });
