@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vendingmachine/services/auth_service.dart';
 
-import '../main.dart';
+import '../pages/home_page.dart';
 import '../pages/login_page.dart';
 
 class AuthCheck extends StatefulWidget {
@@ -20,7 +20,7 @@ class _AuthCheckState extends State<AuthCheck>{
     if(auth.isLoading)
       return loading();
     else if(auth.usuario == null) return LoginPage();
-    else return MyHomePage(title: 'Vending Machine');
+    else return HomePage(userName: auth.usuario?.email,);
   }
 
   loading(){

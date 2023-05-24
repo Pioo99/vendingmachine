@@ -49,6 +49,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '82828345213',
     projectId: 'vending-machine-a1833',
     authDomain: 'vending-machine-a1833.firebaseapp.com',
+    databaseURL: 'https://vending-machine-a1833-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'vending-machine-a1833.appspot.com',
     measurementId: 'G-XDR61L2R56',
   );
@@ -58,6 +59,7 @@ class DefaultFirebaseOptions {
     appId: '1:82828345213:android:0d0b542b0ac69d763c9614',
     messagingSenderId: '82828345213',
     projectId: 'vending-machine-a1833',
+    databaseURL: 'https://vending-machine-a1833-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'vending-machine-a1833.appspot.com',
   );
 
@@ -66,6 +68,7 @@ class DefaultFirebaseOptions {
     appId: '1:82828345213:ios:42f99568917dd6833c9614',
     messagingSenderId: '82828345213',
     projectId: 'vending-machine-a1833',
+    databaseURL: 'https://vending-machine-a1833-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'vending-machine-a1833.appspot.com',
     iosClientId: '82828345213-k8j935ohdjln1moohg07rgfon96rn5d5.apps.googleusercontent.com',
     iosBundleId: 'com.example.vendingmachine',
@@ -76,6 +79,7 @@ class DefaultFirebaseOptions {
     appId: '1:82828345213:ios:4a4aa753fa6f08333c9614',
     messagingSenderId: '82828345213',
     projectId: 'vending-machine-a1833',
+    databaseURL: 'https://vending-machine-a1833-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'vending-machine-a1833.appspot.com',
     iosClientId: '82828345213-738bpcph0irm4tf4t6n8pg4pk3cn7tf9.apps.googleusercontent.com',
     iosBundleId: 'com.example.vendingmachine.RunnerTests',
