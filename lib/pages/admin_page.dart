@@ -23,7 +23,7 @@ class AdminPage extends StatelessWidget {
                     MaterialPageRoute(builder: (context) => ChocolatePage()),
                   );
                 },
-                child: Text('Edição Chocolates'),
+                child: Text('Chocolates'),
               ),
             ),
             SizedBox(height: 16.0),

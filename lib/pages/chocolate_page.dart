@@ -47,7 +47,7 @@ class _ChocolatePageState extends State<ChocolatePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Lista de Objetos'),
+        title: Text('Lista de chocolates'),
       ),
       body: ListView.builder(
         itemCount: _objects.length,

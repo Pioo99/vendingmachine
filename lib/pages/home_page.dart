@@ -18,6 +18,8 @@ class _HomePageState extends State<HomePage> {
   late String? user;
 
   late DatabaseReference dbRef = FirebaseDatabase.instance.ref().child('orders');
+  late DatabaseReference dbRefClient = FirebaseDatabase.instance.ref().child('usuarios');
+  late DatabaseReference dbRefChocolate = FirebaseDatabase.instance.ref().child('chocolates');
 
   @override
   void initState() {
@@ -94,7 +96,7 @@ class _HomePageState extends State<HomePage> {
                   onPressed: () {
                     enviarPedido(valorWidget1, valorWidget2, valorWidget3);
                   },
-                  child: Text('Botão Retangular'),
+                  child: Text('Compre'),
                 ),
               ),
             ),
