@@ -28,9 +28,15 @@ class _HomePageState extends State<HomePage> {
   }
 
   void enviarPedido(valorWidget1, valorWidget2, valorWidget3) async {
+
+    final aquantidade = await FirebaseDatabase.instance.ref().child('pedido/aquantidade').get();
+    final bquantidade = await FirebaseDatabase.instance.ref().child('pedido/bquantidade').get();
+    final cquantidade = await FirebaseDatabase.instance.ref().child('pedido/cquantidade').get();
+
     FirebaseDatabase.instance.ref().child('pedido').child('chocolate1').set(valorWidget1);
     FirebaseDatabase.instance.ref().child('pedido').child('chocolate2').set(valorWidget2);
-    FirebaseDatabase.instance.ref().child('pedido').child('chocolate3').set(valorWidget3);
+    FirebaseDatabase.instance.ref().child('pedido').child('chocolate3').set(valorWidget1);
+    FirebaseDatabase.instance.ref().child('pedido').child('retirado').set(0);
   }
 
   void atualizarValor(int widgetId, int novoValor) {
