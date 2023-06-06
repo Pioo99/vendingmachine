@@ -17,7 +17,7 @@ class _HomePageState extends State<HomePage> {
   int valorWidget3 = 0;
   late String? user;
 
-  late DatabaseReference dbRef = FirebaseDatabase.instance.ref().child('orders');
+  late DatabaseReference dbRef = FirebaseDatabase.instance.ref().child('pedido');
   late DatabaseReference dbRefClient = FirebaseDatabase.instance.ref().child('usuarios');
   late DatabaseReference dbRefChocolate = FirebaseDatabase.instance.ref().child('chocolates');
 
@@ -28,15 +28,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   void enviarPedido(valorWidget1, valorWidget2, valorWidget3) async {
-    Map<String, String> orders = {
-      'chocolate_1': valorWidget1.toString(),
-      'chocolate_2': valorWidget2.toString(),
-      'chocolate_3': valorWidget3.toString(),
-      "user": user.toString(),
-      'retirado': 'false'
-    };
-
-    dbRef.push().set(orders);
+    FirebaseDatabase.instance.ref().child('pedido').child('chocolate1').set(valorWidget1);
+    FirebaseDatabase.instance.ref().child('pedido').child('chocolate2').set(valorWidget2);
+    FirebaseDatabase.instance.ref().child('pedido').child('chocolate3').set(valorWidget3);
   }
 
   void atualizarValor(int widgetId, int novoValor) {
