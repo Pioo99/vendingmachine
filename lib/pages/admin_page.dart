@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vendingmachine/pages/chocolate_page.dart';
 
 import 'clientes_page.dart';
+import 'google_maps_page.dart';
 
 class AdminPage extends StatelessWidget {
   @override
@@ -37,6 +38,19 @@ class AdminPage extends StatelessWidget {
                   );
                 },
                 child: Text('Clientes'),
+              ),
+            ),
+            SizedBox(height: 16.0),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => MapScreen()),
+                  );
+                },
+                child: Text('Chocolates'),
               ),
             ),
           ],
