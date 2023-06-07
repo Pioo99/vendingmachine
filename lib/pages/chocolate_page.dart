@@ -1,91 +1,134 @@
-import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:vendingmachine/models/chocolate.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class ChocolatePage extends StatefulWidget {
+
+  ChocolatePage();
+
   @override
   _ChocolatePageState createState() => _ChocolatePageState();
 }
 
 class _ChocolatePageState extends State<ChocolatePage> {
-  late DatabaseReference _databaseRef;
-  late List<Chocolate> _objects;
+  late String? user;
+  late DatabaseReference dbRefPedido;
+
+  TextEditingController aquantidadeController = TextEditingController();
+  TextEditingController bquantidadeController = TextEditingController();
+  TextEditingController cquantidadeController = TextEditingController();
+  TextEditingController avalorController = TextEditingController();
+  TextEditingController bvalorController = TextEditingController();
+  TextEditingController cvalorController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _databaseRef = FirebaseDatabase.instance.ref().child('chocolates');
-    _objects = [];
-    _startListeners();
-  }
+    dbRefPedido = FirebaseDatabase.instance.ref().child('pedido');
 
-  void _startListeners() {
-    _databaseRef.onChildAdded.listen((event) {
-      setState(() {
-        _objects.add(Chocolate.fromSnapshot(event.snapshot));
-      });
-    });
-
-    _databaseRef.onChildChanged.listen((event) {
-      var updatedObject = Chocolate.fromSnapshot(event.snapshot);
-      var index = _objects.indexWhere((obj) => obj.id == updatedObject.id);
-      setState(() {
-        _objects[index] = updatedObject;
-      });
+    // Carregar os valores atuais do pedido
+    dbRefPedido.once().then((DatabaseEvent event) {
+      var dataSnapshot = event.snapshot;
+      if (dataSnapshot.value != null) {
+        Map<dynamic, dynamic>? pedido = dataSnapshot.value as Map<dynamic, dynamic>;
+        setState(() {
+          aquantidadeController.text = pedido?['aquantidade']?.toString() ?? '';
+          bquantidadeController.text = pedido?['bquantidade']?.toString() ?? '';
+          cquantidadeController.text = pedido?['cquantidade']?.toString() ?? '';
+          avalorController.text = pedido?['avalor']?.toString() ?? '';
+          bvalorController.text = pedido?['bvalor']?.toString() ?? '';
+          cvalorController.text = pedido?['cvalor']?.toString() ?? '';
+        });
+      }
     });
   }
 
-  Future<void> _updateValue(Chocolate obj, String newValue) async {
-    await _databaseRef.child(obj.id).update({'valor': newValue});
-  }
+  void atualizarPedido() {
+    int aquantidade = int.tryParse(aquantidadeController.text) ?? 0;
+    int bquantidade = int.tryParse(bquantidadeController.text) ?? 0;
+    int cquantidade = int.tryParse(cquantidadeController.text) ?? 0;
+    int avalor = int.tryParse(avalorController.text) ?? 0;
+    int bvalor = int.tryParse(bvalorController.text) ?? 0;
+    int cvalor = int.tryParse(cvalorController.text) ?? 0;
 
-  Future<void> _updateQuantity(Chocolate obj, String newQuantity) async {
-    await _databaseRef.child(obj.id).update({'quantidade': newQuantity});
+    Map<String, dynamic> novoPedido = {
+      'aquantidade': aquantidade,
+      'bquantidade': bquantidade,
+      'cquantidade': cquantidade,
+      'avalor': avalor,
+      'bvalor': bvalor,
+      'cvalor': cvalor,
+    };
+
+    dbRefPedido.set(novoPedido).then((_) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Pedido atualizado com sucesso')),
+      );
+    }).catchError((error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao atualizar o pedido: $error')),
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Lista de chocolates'),
+        title: Text('Pedido'),
       ),
-      body: ListView.builder(
-        itemCount: _objects.length,
-        itemBuilder: (context, index) {
-          var obj = _objects[index];
-          TextEditingController valorController = TextEditingController(text: obj.valor);
-          TextEditingController quantidadeController = TextEditingController(text: obj.quantidade);
-
-          return ListTile(
-            title: Text(obj.nome),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextField(
-                  controller: valorController,
-                  onChanged: (newValue) {
-                    obj.valor = newValue;
-                  },
-                  decoration: InputDecoration(labelText: 'Valor'),
-                ),
-                TextField(
-                  controller: quantidadeController,
-                  onChanged: (newQuantity) {
-                    obj.quantidade = newQuantity;
-                  },
-                  decoration: InputDecoration(labelText: 'Quantidade'),
-                ),
-              ],
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Pedido',
+              style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
             ),
-            trailing: IconButton(
-              icon: Icon(Icons.save),
-              onPressed: () {
-                _updateValue(obj, obj.valor);
-                _updateQuantity(obj, obj.quantidade);
-              },
+            SizedBox(height: 16.0),
+            Text('Produto A'),
+            TextFormField(
+              controller: aquantidadeController,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(labelText: 'Quantidade'),
             ),
-          );
-        },
+            TextFormField(
+              controller: avalorController,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(labelText: 'Valor'),
+            ),
+            SizedBox(height: 16.0),
+            Text('Produto B'),
+            TextFormField(
+              controller: bquantidadeController,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(labelText: 'Quantidade'),
+            ),
+            TextFormField(
+              controller: bvalorController,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(labelText: 'Valor'),
+            ),
+            SizedBox(height: 16.0),
+            Text('Produto C'),
+            TextFormField(
+              controller: cquantidadeController,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(labelText: 'Quantidade'),
+            ),
+            TextFormField(
+              controller: cvalorController,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(labelText: 'Valor'),
+            ),
+            SizedBox(height: 16.0),
+            ElevatedButton(
+              child: Text('Atualizar Pedido'),
+              onPressed: atualizarPedido,
+            ),
+          ],
+        ),
       ),
     );
   }
