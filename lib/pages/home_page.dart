@@ -6,7 +6,7 @@ import 'package:vendingmachine/pages/admin_page.dart';
 class HomePage extends StatefulWidget {
   final String? userName;
 
-  HomePage({required this.userName});
+  const HomePage({required this.userName});
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -33,26 +33,22 @@ class _HomePageState extends State<HomePage> {
     dbRef.once().then((DatabaseEvent event){
       final dataSnapshot = event.snapshot;
       Map<dynamic, dynamic>? data = dataSnapshot.value as Map<dynamic, dynamic>;
-      if(data != null){
-        setState(() {
-          values = data;
-        });
-      }
+      setState(() {
+        values = data;
+      });
     });
 
     
     dbRefClient.once().then((DatabaseEvent event){
       final dataSnapshot = event.snapshot;
       Map<dynamic, dynamic>? data = dataSnapshot.value as Map<dynamic, dynamic>;
-      if(data != null){
-        data.forEach((key, value) { 
-          if(value['email'] == user){
-            setState(() {
-              saldo = value['saldo'] ?? 0;
-            });
-          }
-        });
-      }
+      data.forEach((key, value) { 
+        if(value['email'] == user){
+          setState(() {
+            saldo = value['saldo'] ?? 0;
+          });
+        }
+      });
     });
 
     dbRef.onValue.listen((DatabaseEvent event) {
@@ -66,7 +62,7 @@ class _HomePageState extends State<HomePage> {
     dbRefClient.onValue.listen((DatabaseEvent event) {
       if (event.snapshot.value != null) {
         Map<dynamic, dynamic>? data = event.snapshot.value as Map<dynamic, dynamic>;
-        data?.forEach((key, value) {
+        data.forEach((key, value) {
           if (value['email'] == user) {
             setState(() {
               saldo = value['saldo'] ?? 0;
@@ -129,11 +125,11 @@ class _HomePageState extends State<HomePage> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text("Erro"),
-              content: Text("Quantidade escolhida acima do estoque"),
+              title: const Text("Erro"),
+              content: const Text("Quantidade escolhida acima do estoque"),
               actions: [
                 TextButton(
-                  child: Text("OK"),
+                  child: const Text("OK"),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -143,17 +139,38 @@ class _HomePageState extends State<HomePage> {
           },
         );
       return;
+      return;
     }
     else if (totalValue > saldo) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Erro"),
-            content: Text("Saldo insuficiente."),
+            title: const Text("Erro"),
+            content: const Text("Saldo insuficiente."),
             actions: [
               TextButton(
-                child: Text("OK"),
+                child: const Text("OK"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+    else if (values['retirado'] == 0) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Erro"),
+            content: const Text("Já há um pedido sendo processado"),
+            actions: [
+              TextButton(
+                child: const Text("OK"),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -185,7 +202,7 @@ class _HomePageState extends State<HomePage> {
     int saldoAtual = usuarios[usuarioId]['saldo'];
     int novoSaldo = saldoAtual - totalValue;
 
-     DatabaseReference newOrderRef = orderRef.push();
+    DatabaseReference newOrderRef = orderRef.push();
     newOrderRef.set({
       'userId': usuarioId,
       'chocolate_1': valorWidget1,
@@ -245,7 +262,7 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Página Inicial'),
+        title: const Text('Página Inicial'),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -323,7 +340,7 @@ class ButtonWidget extends StatelessWidget {
   final int custo;
   final Function(int, int) atualizarValor;
 
-  ButtonWidget({
+  const ButtonWidget({super.key, 
     required this.widgetId,
     required this.valor,
     required this.estoque,

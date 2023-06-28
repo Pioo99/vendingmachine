@@ -1,10 +1,11 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../models/clientes.dart';
 
 class ClientPage extends StatefulWidget {
+  const ClientPage({super.key});
+
   @override
   _ClientPageState createState() => _ClientPageState();
 }
@@ -45,7 +46,7 @@ class _ClientPageState extends State<ClientPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Lista de Clientes'),
+        title: const Text('Lista de Clientes'),
       ),
       body: ListView.builder(
         itemCount: _clientes.length,
@@ -61,10 +62,10 @@ class _ClientPageState extends State<ClientPage> {
                 cliente.saldo = int.parse(newSaldo);
               },
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: 'Saldo'),
+              decoration: const InputDecoration(labelText: 'Saldo'),
             ),
             trailing: IconButton(
-              icon: Icon(Icons.save),
+              icon: const Icon(Icons.save),
               onPressed: () {
                 _updateSaldo(cliente, cliente.saldo);
               },
