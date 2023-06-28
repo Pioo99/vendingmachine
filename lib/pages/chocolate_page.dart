@@ -1,10 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class ChocolatePage extends StatefulWidget {
 
-  ChocolatePage();
+  const ChocolatePage({super.key});
 
   @override
   _ChocolatePageState createState() => _ChocolatePageState();
@@ -32,12 +31,12 @@ class _ChocolatePageState extends State<ChocolatePage> {
       if (dataSnapshot.value != null) {
         Map<dynamic, dynamic>? pedido = dataSnapshot.value as Map<dynamic, dynamic>;
         setState(() {
-          aquantidadeController.text = pedido?['aquantidade']?.toString() ?? '';
-          bquantidadeController.text = pedido?['bquantidade']?.toString() ?? '';
-          cquantidadeController.text = pedido?['cquantidade']?.toString() ?? '';
-          avalorController.text = pedido?['avalor']?.toString() ?? '';
-          bvalorController.text = pedido?['bvalor']?.toString() ?? '';
-          cvalorController.text = pedido?['cvalor']?.toString() ?? '';
+          aquantidadeController.text = pedido['aquantidade']?.toString() ?? '';
+          bquantidadeController.text = pedido['bquantidade']?.toString() ?? '';
+          cquantidadeController.text = pedido['cquantidade']?.toString() ?? '';
+          avalorController.text = pedido['avalor']?.toString() ?? '';
+          bvalorController.text = pedido['bvalor']?.toString() ?? '';
+          cvalorController.text = pedido['cvalor']?.toString() ?? '';
         });
       }
     });
@@ -62,11 +61,11 @@ class _ChocolatePageState extends State<ChocolatePage> {
 
     dbRefPedido.set(novoPedido).then((_) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Pedido atualizado com sucesso')),
+        const SnackBar(content: Text('Chocolate atualizado com sucesso')),
       );
     }).catchError((error) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erro ao atualizar o pedido: $error')),
+        SnackBar(content: Text('Erro ao atualizar o chocolate: $error')),
       );
     });
   }
@@ -75,57 +74,57 @@ class _ChocolatePageState extends State<ChocolatePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pedido'),
+        title: const Text('Chocolate'),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Pedido',
+            const Text(
+              'Chocolate',
               style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 16.0),
-            Text('Produto A'),
+            const SizedBox(height: 16.0),
+            const Text('Chocolate A'),
             TextFormField(
               controller: aquantidadeController,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: 'Quantidade'),
+              decoration: const InputDecoration(labelText: 'Quantidade'),
             ),
             TextFormField(
               controller: avalorController,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: 'Valor'),
+              decoration: const InputDecoration(labelText: 'Valor'),
             ),
-            SizedBox(height: 16.0),
-            Text('Produto B'),
+            const SizedBox(height: 16.0),
+            const Text('Chocolate B'),
             TextFormField(
               controller: bquantidadeController,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: 'Quantidade'),
+              decoration: const InputDecoration(labelText: 'Quantidade'),
             ),
             TextFormField(
               controller: bvalorController,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: 'Valor'),
+              decoration: const InputDecoration(labelText: 'Valor'),
             ),
-            SizedBox(height: 16.0),
-            Text('Produto C'),
+            const SizedBox(height: 16.0),
+            const Text('Chocolate C'),
             TextFormField(
               controller: cquantidadeController,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: 'Quantidade'),
+              decoration: const InputDecoration(labelText: 'Quantidade'),
             ),
             TextFormField(
               controller: cvalorController,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(labelText: 'Valor'),
+              decoration: const InputDecoration(labelText: 'Valor'),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             ElevatedButton(
-              child: Text('Atualizar Pedido'),
               onPressed: atualizarPedido,
+              child: const Text('Atualizar Chocolate'),
             ),
           ],
         ),

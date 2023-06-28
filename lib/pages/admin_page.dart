@@ -6,11 +6,13 @@ import 'clientes_page.dart';
 import 'google_maps_page.dart';
 
 class AdminPage extends StatelessWidget {
+  const AdminPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('ADMIN'),
+        title: const Text('ADMIN'),
       ),
       body: Center(
         child: Column(
@@ -22,49 +24,49 @@ class AdminPage extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ChocolatePage()),
+                    MaterialPageRoute(builder: (context) => const ChocolatePage()),
                   );
                 },
-                child: Text('Chocolates'),
+                child: const Text('Chocolates'),
               ),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ClientPage()),
+                    MaterialPageRoute(builder: (context) => const ClientPage()),
                   );
                 },
-                child: Text('Clientes'),
+                child: const Text('Clientes'),
               ),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => MapScreen()),
+                    MaterialPageRoute(builder: (context) => const MapScreen()),
                   );
                 },
-                child: Text('Coordenadas'),
+                child: const Text('Coordenadas'),
               ),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => OrderPage()),
+                    MaterialPageRoute(builder: (context) => const OrderPage()),
                   );
                 },
-                child: Text('Pedidos'),
+                child: const Text('Pedidos'),
               ),
             ),
           ],
@@ -75,13 +77,15 @@ class AdminPage extends StatelessWidget {
 }
 
 class PrimeiraPagina extends StatelessWidget {
+  const PrimeiraPagina({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Primeira Página'),
+        title: const Text('Primeira Página'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('Conteúdo da primeira página'),
       ),
     );
@@ -89,13 +93,15 @@ class PrimeiraPagina extends StatelessWidget {
 }
 
 class SegundaPagina extends StatelessWidget {
+  const SegundaPagina({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Segunda Página'),
+        title: const Text('Segunda Página'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('Conteúdo da segunda página'),
       ),
     );

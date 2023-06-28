@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class ButtonWidget extends StatefulWidget {
+  const ButtonWidget({super.key});
+
   @override
   _ButtonWidgetState createState() => _ButtonWidgetState();
 }
@@ -27,20 +29,20 @@ class _ButtonWidgetState extends State<ButtonWidget> {
       children: [
         Text(
           'Valor: $_valor',
-          style: TextStyle(fontSize: 24),
+          style: const TextStyle(fontSize: 24),
         ),
-        SizedBox(height: 16),
+        const SizedBox(height: 16),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
               onPressed: _incrementarValor,
-              child: Icon(Icons.add),
+              child: const Icon(Icons.add),
             ),
-            SizedBox(width: 16),
+            const SizedBox(width: 16),
             ElevatedButton(
               onPressed: _decrementarValor,
-              child: Icon(Icons.remove),
+              child: const Icon(Icons.remove),
             ),
           ],
         ),

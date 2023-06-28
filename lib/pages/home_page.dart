@@ -6,7 +6,7 @@ import 'package:vendingmachine/pages/admin_page.dart';
 class HomePage extends StatefulWidget {
   final String? userName;
 
-  HomePage({required this.userName});
+  const HomePage({required this.userName});
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -33,26 +33,22 @@ class _HomePageState extends State<HomePage> {
     dbRef.once().then((DatabaseEvent event){
       final dataSnapshot = event.snapshot;
       Map<dynamic, dynamic>? data = dataSnapshot.value as Map<dynamic, dynamic>;
-      if(data != null){
-        setState(() {
-          values = data;
-        });
-      }
+      setState(() {
+        values = data;
+      });
     });
 
     
     dbRefClient.once().then((DatabaseEvent event){
       final dataSnapshot = event.snapshot;
       Map<dynamic, dynamic>? data = dataSnapshot.value as Map<dynamic, dynamic>;
-      if(data != null){
-        data.forEach((key, value) { 
-          if(value['email'] == user){
-            setState(() {
-              saldo = value['saldo'] ?? 0;
-            });
-          }
-        });
-      }
+      data.forEach((key, value) { 
+        if(value['email'] == user){
+          setState(() {
+            saldo = value['saldo'] ?? 0;
+          });
+        }
+      });
     });
 
     dbRef.onValue.listen((DatabaseEvent event) {
@@ -66,7 +62,7 @@ class _HomePageState extends State<HomePage> {
     dbRefClient.onValue.listen((DatabaseEvent event) {
       if (event.snapshot.value != null) {
         Map<dynamic, dynamic>? data = event.snapshot.value as Map<dynamic, dynamic>;
-        data?.forEach((key, value) {
+        data.forEach((key, value) {
           if (value['email'] == user) {
             setState(() {
               saldo = value['saldo'] ?? 0;
@@ -87,11 +83,11 @@ class _HomePageState extends State<HomePage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Erro"),
-            content: Text("Nenhum chocolate selecionado."),
+            title: const Text("Erro"),
+            content: const Text("Nenhum chocolate selecionado."),
             actions: [
               TextButton(
-                child: Text("OK"),
+                child: const Text("OK"),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -100,6 +96,7 @@ class _HomePageState extends State<HomePage> {
           );
         },
       );
+      return;
     }
     else if(valorWidget1 > values['aquantidade'] || valorWidget2 > values['bquantidade'] || valorWidget3 > values['cquantidade'])
     {
@@ -107,11 +104,11 @@ class _HomePageState extends State<HomePage> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text("Erro"),
-              content: Text("Quantidade escolhida acima do estoque"),
+              title: const Text("Erro"),
+              content: const Text("Quantidade escolhida acima do estoque"),
               actions: [
                 TextButton(
-                  child: Text("OK"),
+                  child: const Text("OK"),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -120,17 +117,38 @@ class _HomePageState extends State<HomePage> {
             );
           },
         );
+      return;
     }
     else if (totalValue > saldo) {
       showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text("Erro"),
-            content: Text("Saldo insuficiente."),
+            title: const Text("Erro"),
+            content: const Text("Saldo insuficiente."),
             actions: [
               TextButton(
-                child: Text("OK"),
+                child: const Text("OK"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+    else if (values['retirado'] == 0) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Erro"),
+            content: const Text("Já há um pedido sendo processado"),
+            actions: [
+              TextButton(
+                child: const Text("OK"),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -162,7 +180,7 @@ class _HomePageState extends State<HomePage> {
     int saldoAtual = usuarios[usuarioId]['saldo'];
     int novoSaldo = saldoAtual - totalValue;
 
-     DatabaseReference newOrderRef = orderRef.push();
+    DatabaseReference newOrderRef = orderRef.push();
     newOrderRef.set({
       'userId': usuarioId,
       'chocolate_1': valorWidget1,
@@ -172,6 +190,25 @@ class _HomePageState extends State<HomePage> {
     });
 
     await usuariosRef.child(usuarioId).update({'saldo': novoSaldo});
+    
+    
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Sucesso"),
+            content: const Text("Pedido realizado com sucesso."),
+            actions: [
+              TextButton(
+                child: const Text("OK"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );  
     
   }
 
@@ -202,16 +239,16 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Página Inicial'),
+        title: const Text('Página Inicial'),
       ),
       body: Stack(
         children: [
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Text(
             'Saldo do usuário: $saldo',
-            style: TextStyle(fontSize: 24),
+            style: const TextStyle(fontSize: 24),
           ),
-          SizedBox(height: 16),
+          const SizedBox(height: 16),
           Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -223,7 +260,7 @@ class _HomePageState extends State<HomePage> {
                   custo: values['avalor'],                
                   atualizarValor: atualizarValor,
                 ),
-                SizedBox(width: 16),
+                const SizedBox(width: 16),
                 ButtonWidget(
                   widgetId: 2,
                   valor: valorWidget2,
@@ -231,7 +268,7 @@ class _HomePageState extends State<HomePage> {
                   custo: values['bvalor'],     
                   atualizarValor: atualizarValor,
                 ),
-                SizedBox(width: 16),
+                const SizedBox(width: 16),
                 ButtonWidget(
                   widgetId: 3,
                   valor: valorWidget3,
@@ -245,7 +282,7 @@ class _HomePageState extends State<HomePage> {
           Align(
             alignment: Alignment.bottomLeft,
             child: Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: SizedBox(
                 width: 120.0,
                 height: 40.0,
@@ -266,10 +303,10 @@ class _HomePageState extends State<HomePage> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => AdminPage()),
+                    MaterialPageRoute(builder: (context) => const AdminPage()),
                   );
                 },
-                child: Icon(Icons.lock),
+                child: const Icon(Icons.lock),
               ),
             ),
         ],
@@ -285,7 +322,7 @@ class ButtonWidget extends StatelessWidget {
   final int custo;
   final Function(int, int) atualizarValor;
 
-  ButtonWidget({
+  const ButtonWidget({super.key, 
     required this.widgetId,
     required this.valor,
     required this.estoque,
@@ -308,31 +345,31 @@ class ButtonWidget extends StatelessWidget {
       children: [
         Text(
           'Chocolate $widgetId',
-          style: TextStyle(fontSize: 24),
+          style: const TextStyle(fontSize: 24),
         ),
         Text(
           'Estoque: $estoque',
-          style: TextStyle(fontSize: 24),
+          style: const TextStyle(fontSize: 24),
         ),
         Text(
           'Custo: $custo',
-          style: TextStyle(fontSize: 24),
+          style: const TextStyle(fontSize: 24),
         ),
         Text(
           'Quantidade desejada: $valor',
-          style: TextStyle(fontSize: 24),
+          style: const TextStyle(fontSize: 24),
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
               onPressed: _incrementarValor,
-              child: Icon(Icons.add),
+              child: const Icon(Icons.add),
             ),
-            SizedBox(width: 16),
+            const SizedBox(width: 16),
             ElevatedButton(
               onPressed: _decrementarValor,
-              child: Icon(Icons.remove),
+              child: const Icon(Icons.remove),
             ),
           ],
         ),

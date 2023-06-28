@@ -5,6 +5,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../models/locationdata.dart';
 
 class MapScreen extends StatefulWidget {
+  const MapScreen({super.key});
+
 
   @override
   _MapScreenState createState() => _MapScreenState();
@@ -41,7 +43,7 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Location Map'),
+        title: const Text('Location Map'),
       ),
       body: Center(
         child: Column(
@@ -49,12 +51,12 @@ class _MapScreenState extends State<MapScreen> {
           children: [
             Text(
               _locationData!.latitude.toString(),
-              style: TextStyle(fontSize: 20),
+              style: const TextStyle(fontSize: 20),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Text(
               _locationData!.longitude.toString(),
-              style: TextStyle(fontSize: 20),
+              style: const TextStyle(fontSize: 20),
             ),
           ],
         ),
