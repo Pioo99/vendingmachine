@@ -37,7 +37,7 @@ class _ClientPageState extends State<ClientPage> {
     });
   }
 
-  Future<void> _updateSaldo(Cliente cliente, double newSaldo) async {
+  Future<void> _updateSaldo(Cliente cliente, int newSaldo) async {
     await _databaseRef.child(cliente.id).update({'saldo': newSaldo});
   }
 
@@ -58,7 +58,7 @@ class _ClientPageState extends State<ClientPage> {
             subtitle: TextField(
               controller: saldoController,
               onChanged: (newSaldo) {
-                cliente.saldo = double.parse(newSaldo);
+                cliente.saldo = int.parse(newSaldo);
               },
               keyboardType: TextInputType.number,
               decoration: InputDecoration(labelText: 'Saldo'),

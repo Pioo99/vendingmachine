@@ -81,7 +81,28 @@ class _HomePageState extends State<HomePage> {
   void enviarPedido(valorWidget1, valorWidget2, valorWidget3) async {
 
     int totalValue = calcularValorTotal();
-    if(valorWidget1 == 0 && valorWidget2 == 0 && valorWidget3 == 0)
+    if(values['retirado'] == 0)
+    {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Erro"),
+            content: Text("Ainda há um pedido sendo processado aguarde."),
+            actions: [
+              TextButton(
+                child: Text("OK"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+    else if(valorWidget1 == 0 && valorWidget2 == 0 && valorWidget3 == 0)
     {
       showDialog(
         context: context,
@@ -100,6 +121,7 @@ class _HomePageState extends State<HomePage> {
           );
         },
       );
+      return;
     }
     else if(valorWidget1 > values['aquantidade'] || valorWidget2 > values['bquantidade'] || valorWidget3 > values['cquantidade'])
     {
@@ -120,6 +142,7 @@ class _HomePageState extends State<HomePage> {
             );
           },
         );
+      return;
     }
     else if (totalValue > saldo) {
       showDialog(
@@ -172,7 +195,27 @@ class _HomePageState extends State<HomePage> {
     });
 
     await usuariosRef.child(usuarioId).update({'saldo': novoSaldo});
-    
+
+    showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text("Sucesso"),
+              content: Text("Pedido realizado"),
+              actions: [
+                TextButton(
+                  child: Text("OK"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+  
+
+
   }
 
   void atualizarValor(int widgetId, int novoValor) {
@@ -204,76 +247,71 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text('Página Inicial'),
       ),
-      body: Stack(
-        children: [
-          SizedBox(height: 16),
-          Text(
-            'Saldo do usuário: $saldo',
-            style: TextStyle(fontSize: 24),
-          ),
-          SizedBox(height: 16),
-          Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ButtonWidget(
-                  widgetId: 1,
-                  valor: valorWidget1,
-                  estoque: values['aquantidade'],
-                  custo: values['avalor'],                
-                  atualizarValor: atualizarValor,
-                ),
-                SizedBox(width: 16),
-                ButtonWidget(
-                  widgetId: 2,
-                  valor: valorWidget2,
-                  estoque: values['bquantidade'],
-                  custo: values['bvalor'],     
-                  atualizarValor: atualizarValor,
-                ),
-                SizedBox(width: 16),
-                ButtonWidget(
-                  widgetId: 3,
-                  valor: valorWidget3,
-                  estoque: values['cquantidade'],
-                  custo: values['cvalor'],     
-                  atualizarValor: atualizarValor,
-                ),
-              ],
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            SizedBox(height: 16),
+            Text(
+              'Saldo do usuário: $saldo',
+              style: TextStyle(fontSize: 24),
+              textAlign: TextAlign.center,
             ),
-          ),
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: Padding(
-              padding: EdgeInsets.all(16.0),
-              child: SizedBox(
-                width: 120.0,
-                height: 40.0,
-                child: ElevatedButton(
-                  onPressed: () {
-                    enviarPedido(valorWidget1, valorWidget2, valorWidget3);
-                  },
-                  child: Text('Valor total: ${calcularValorTotal()}'),
+            SizedBox(height: 16),
+            ButtonWidget(
+              widgetId: 1,
+              valor: valorWidget1,
+              estoque: values['aquantidade'],
+              custo: values['avalor'],                
+              atualizarValor: atualizarValor,
+            ),
+            SizedBox(height: 16),
+            ButtonWidget(
+              widgetId: 2,
+              valor: valorWidget2,
+              estoque: values['bquantidade'],
+              custo: values['bvalor'],     
+              atualizarValor: atualizarValor,
+            ),
+            SizedBox(height: 16),
+            ButtonWidget(
+              widgetId: 3,
+              valor: valorWidget3,
+              estoque: values['cquantidade'],
+              custo: values['cvalor'],     
+              atualizarValor: atualizarValor,
+            ),
+            SizedBox(height: 16),
+            Align(
+              alignment: Alignment.bottomLeft,
+              child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: SizedBox(
+                  width: 120.0,
+                  height: 40.0,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      enviarPedido(valorWidget1, valorWidget2, valorWidget3);
+                    },
+                    child: Text('Valor total: ${calcularValorTotal()}'),
+                  ),
                 ),
               ),
             ),
-          ),
-          if (isAdmin)
-            Positioned(
-              bottom: 16.0,
-              right: 16.0,
-              child: FloatingActionButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => AdminPage()),
-                  );
-                },
-                child: Icon(Icons.lock),
-              ),
-            ),
-        ],
+          ],
+        ),
       ),
+      floatingActionButton: isAdmin
+          ? FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AdminPage()),
+                );
+              },
+              child: Icon(Icons.lock),
+            )
+          : null,
     );
   }
 }
@@ -303,40 +341,46 @@ class ButtonWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          'Chocolate $widgetId',
-          style: TextStyle(fontSize: 24),
-        ),
-        Text(
-          'Estoque: $estoque',
-          style: TextStyle(fontSize: 24),
-        ),
-        Text(
-          'Custo: $custo',
-          style: TextStyle(fontSize: 24),
-        ),
-        Text(
-          'Quantidade desejada: $valor',
-          style: TextStyle(fontSize: 24),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: _incrementarValor,
-              child: Icon(Icons.add),
-            ),
-            SizedBox(width: 16),
-            ElevatedButton(
-              onPressed: _decrementarValor,
-              child: Icon(Icons.remove),
-            ),
-          ],
-        ),
-      ],
+    return Padding(
+      padding: EdgeInsets.all(16.0),
+      child: Column(
+        children: [
+          Text(
+            'Chocolate $widgetId',
+            style: TextStyle(fontSize: 24),
+            textAlign: TextAlign.center,
+          ),
+          Text(
+            'Estoque: $estoque',
+            style: TextStyle(fontSize: 24),
+            textAlign: TextAlign.center,
+          ),
+          Text(
+            'Custo: $custo',
+            style: TextStyle(fontSize: 24),
+            textAlign: TextAlign.center,
+          ),
+          Text(
+            'Quantidade desejada: $valor',
+            style: TextStyle(fontSize: 24),
+            textAlign: TextAlign.center,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElevatedButton(
+                onPressed: _incrementarValor,
+                child: Icon(Icons.add),
+              ),
+              SizedBox(width: 16),
+              ElevatedButton(
+                onPressed: _decrementarValor,
+                child: Icon(Icons.remove),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

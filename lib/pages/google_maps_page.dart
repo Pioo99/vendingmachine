@@ -1,38 +1,30 @@
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-
-import '../models/locationdata.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 class MapScreen extends StatefulWidget {
-
   @override
   _MapScreenState createState() => _MapScreenState();
 }
 
 class _MapScreenState extends State<MapScreen> {
-  GoogleMapController? _mapController;
-  LocationData? _locationData;
+  DatabaseReference _databaseReference = FirebaseDatabase.instance.reference();
+  double latitude = 0.0;
+  double longitude = 0.0;
 
   @override
   void initState() {
     super.initState();
-    _getLocationData();
+    fetchLocationFromFirebase();
   }
 
-  void _getLocationData() {
-    DatabaseReference locationRef = FirebaseDatabase.instance
-        .ref()
-        .child('coordenada');
-
-    locationRef.once().then((DatabaseEvent event) {
-      final snapshot = event.snapshot;
-      Map<dynamic, dynamic> data = snapshot.value as Map<dynamic, dynamic>;
-      double latitude = data['latitude'];
-      double longitude = data['longitude'];
-
+  void fetchLocationFromFirebase() {
+    _databaseReference.child('location').once().then((DatabaseEvent event) {
+      var snapshot = event.snapshot;
+      Map<dynamic, dynamic> values = snapshot.value as Map<dynamic, dynamic>;
       setState(() {
-        _locationData = LocationData(latitude, longitude);
+        latitude = values['latitude'] ?? 0.0;
+        longitude = values['longitude'] ?? 0.0;
       });
     });
   }
@@ -41,23 +33,25 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Location Map'),
+        title: Text('Mapa'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              _locationData!.latitude.toString(),
-              style: TextStyle(fontSize: 20),
+      body: Column(
+        children: [
+          Expanded(
+            child: GoogleMap(
+              initialCameraPosition: CameraPosition(
+                target: LatLng(latitude, longitude),
+                zoom: 15,
+              ),
+              markers: Set<Marker>.from([
+                Marker(
+                  markerId: MarkerId('location'),
+                  position: LatLng(latitude, longitude),
+                ),
+              ]),
             ),
-            SizedBox(height: 10),
-            Text(
-              _locationData!.longitude.toString(),
-              style: TextStyle(fontSize: 20),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

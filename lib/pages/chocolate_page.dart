@@ -62,11 +62,11 @@ class _ChocolatePageState extends State<ChocolatePage> {
 
     dbRefPedido.set(novoPedido).then((_) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Pedido atualizado com sucesso')),
+        SnackBar(content: Text('Chocolate atualizado com sucesso')),
       );
     }).catchError((error) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erro ao atualizar o pedido: $error')),
+        SnackBar(content: Text('Erro ao atualizar o chocolate: $error')),
       );
     });
   }
@@ -75,7 +75,7 @@ class _ChocolatePageState extends State<ChocolatePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Pedido'),
+        title: Text('Chocolates'),
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16.0),
@@ -83,11 +83,11 @@ class _ChocolatePageState extends State<ChocolatePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Pedido',
+              'Chocolates',
               style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
             ),
             SizedBox(height: 16.0),
-            Text('Produto A'),
+            Text('Chocolate 1'),
             TextFormField(
               controller: aquantidadeController,
               keyboardType: TextInputType.number,
@@ -99,7 +99,7 @@ class _ChocolatePageState extends State<ChocolatePage> {
               decoration: InputDecoration(labelText: 'Valor'),
             ),
             SizedBox(height: 16.0),
-            Text('Produto B'),
+            Text('Chocolate 2'),
             TextFormField(
               controller: bquantidadeController,
               keyboardType: TextInputType.number,
@@ -111,7 +111,7 @@ class _ChocolatePageState extends State<ChocolatePage> {
               decoration: InputDecoration(labelText: 'Valor'),
             ),
             SizedBox(height: 16.0),
-            Text('Produto C'),
+            Text('Chocolate 3'),
             TextFormField(
               controller: cquantidadeController,
               keyboardType: TextInputType.number,
@@ -124,7 +124,7 @@ class _ChocolatePageState extends State<ChocolatePage> {
             ),
             SizedBox(height: 16.0),
             ElevatedButton(
-              child: Text('Atualizar Pedido'),
+              child: Text('Atualizar Chocolates'),
               onPressed: atualizarPedido,
             ),
           ],
